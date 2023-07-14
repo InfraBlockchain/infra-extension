@@ -8,6 +8,7 @@ import type { KeyringPair, KeyringPair$Json, KeyringPair$Meta } from '@polkadot/
 import type { Registry, SignerPayloadJSON, SignerPayloadRaw } from '@polkadot/types/types';
 import type { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import type { KeypairType } from '@polkadot/util-crypto/types';
+import type { ExtDef } from '@polkadot/types/extrinsic/signedExtensions/types';
 import type { AccountJson, AllowedPath, AuthorizeRequest, MessageTypes, MetadataRequest, RequestAccountBatchExport, RequestAccountChangePassword, RequestAccountCreateExternal, RequestAccountCreateHardware, RequestAccountCreateSuri, RequestAccountEdit, RequestAccountExport, RequestAccountForget, RequestAccountShow, RequestAccountTie, RequestAccountValidate, RequestActiveTabsUrlUpdate, RequestAuthorizeApprove, RequestBatchRestore, RequestDeriveCreate, RequestDeriveValidate, RequestJsonRestore, RequestMetadataApprove, RequestMetadataReject, RequestSeedCreate, RequestSeedValidate, RequestSigningApprovePassword, RequestSigningApproveSignature, RequestSigningCancel, RequestSigningIsLocked, RequestTypes, RequestUpdateAuthorizedAccounts, ResponseAccountExport, ResponseAccountsExport, ResponseAuthorizeList, ResponseDeriveValidate, ResponseJsonGetAccountInfo, ResponseSeedCreate, ResponseSeedValidate, ResponseSigningIsLocked, ResponseType, SigningRequest } from '../types.js';
 import type { AuthorizedAccountsDiff } from './State.js';
 import type State from './State.js';
@@ -370,6 +371,25 @@ export default class Extension {
     let registry: Registry;
     const { payload } = request;
 
+    const types = {
+      SystemTokenId: {
+        paraId: "Compact<u32>",
+        palletId: "Compact<u32>",
+        assetId: "Compact<u32>"
+      }
+    } as unknown as Record<string, string>;
+
+    const chargeSystemTokenExtensions = {
+      ChargeSystemToken: {
+        extrinsic: {
+          tip: 'Compact<u128>',
+          systemTokenId: 'Option<SystemTokenId>',
+          voteCandidate: 'Option<AccountId32>',
+        },
+        payload: {}
+      }
+    } as unknown as ExtDef;
+    
     if (isJsonPayload(payload)) {
       // Get the metadata for the genesisHash
       const metadata = this.#state.knownMetadata.find(({ genesisHash }) => genesisHash === payload.genesisHash);
@@ -383,7 +403,8 @@ export default class Extension {
       } else {
         // we have no metadata, create a new registry
         registry = new TypeRegistry();
-        registry.setSignedExtensions(payload.signedExtensions);
+        registry.setSignedExtensions(payload.signedExtensions, chargeSystemTokenExtensions);
+        registry.register(types);
       }
     } else {
       // for non-payload, just create a registry to use
