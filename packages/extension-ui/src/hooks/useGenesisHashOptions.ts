@@ -6,7 +6,7 @@ import type { HexString } from '@polkadot/util/types';
 import { useEffect, useMemo, useState } from 'react';
 
 import { getAllMetadata } from '../messaging.js';
-import chains from '../util/chains.js';
+// import chains from '../util/chains.js';
 import useTranslation from './useTranslation.js';
 
 interface Option {
@@ -14,7 +14,7 @@ interface Option {
   value: HexString;
 }
 
-const RELAY_CHAIN = 'Relay Chain';
+// const RELAY_CHAIN = 'Relay Chain';
 
 export default function useGenesisHashOptions (): Option[] {
   const { t } = useTranslation();
@@ -33,6 +33,8 @@ export default function useGenesisHashOptions (): Option[] {
       text: t('Allow use on any chain'),
       value: '' as HexString
     },
+    // TODO: Add InfraBlockchain lists
+    /*
     // put the relay chains at the top
     ...chains.filter(({ chain }) => chain.includes(RELAY_CHAIN))
       .map(({ chain, genesisHash }) => ({
@@ -54,6 +56,7 @@ export default function useGenesisHashOptions (): Option[] {
         )
       )
       .sort((a, b) => a.text.localeCompare(b.text))
+      */
   ], [metadataChains, t]);
 
   return hashes;
