@@ -1,5 +1,5 @@
 {
-  "author": "polkadot.{js}",
+  "author": "InfraBlockchain",
   "description": "Manage your InfraBlockchain accounts outside of dapps. Injects the accounts and allows signing transactions for a specific account.",
   "homepage_url": "https://github.com/InfraBlockchain/infra-extension",
   "name": "InfraBlockchain extension",

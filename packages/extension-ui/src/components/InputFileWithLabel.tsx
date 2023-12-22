@@ -1,8 +1,7 @@
-// Copyright 2017-2023 @polkadot/react-components authors & contributors
+// Copyright 2017-2023 @polkadot/extension-ui authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { DropzoneRef } from 'react-dropzone';
-import type { ThemeProps } from '../types.js';
 
 import React, { createRef, useCallback, useState } from 'react';
 import Dropzone from 'react-dropzone';
@@ -74,7 +73,7 @@ function InputFile ({ accept, className = '', clearContent, convertHex, isDisabl
         reader.onerror = NOOP;
 
         reader.onload = ({ target }: ProgressEvent<FileReader>): void => {
-          if (target && target.result) {
+          if (target?.result) {
             const name = file.name;
             const data = convertResult(target.result as ArrayBuffer, convertHex);
 
@@ -131,11 +130,11 @@ function InputFile ({ accept, className = '', clearContent, convertHex, isDisabl
     : dropZone;
 }
 
-export default React.memo(styled(InputFile)(({ isError, theme }: InputFileProps & ThemeProps) => `
-  border: 1px solid ${isError ? theme.errorBorderColor : theme.inputBorderColor};
-  background: ${theme.inputBackground};
-  border-radius: ${theme.borderRadius};
-  color: ${isError ? theme.errorBorderColor : theme.textColor};
+export default React.memo(styled(InputFile)<InputFileProps>(({ isError }) => `
+  border: 1px solid var(${isError ? '--errorBorderColor' : '--inputBorderColor'});
+  background: var(--inputBackground);
+  border-radius: var(--borderRadius);
+  color: var(${isError ? '--errorBorderColor' : '--textColor'});
   font-size: 1rem;
   margin: 0.25rem 0;
   overflow-wrap: anywhere;

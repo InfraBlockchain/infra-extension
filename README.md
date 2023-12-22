@@ -18,7 +18,7 @@ Find out more about how to use the extension as a Dapp developper, cookbook, as 
 
 Steps to build the extension and view your changes in a browser:
 
-1. Build via `yarn build` or `yarn watch`
+1. Build via `yarn build`
 2. Install the extension
   - Chrome:
     - go to `chrome://extensions/`
@@ -105,8 +105,8 @@ The extension injects `injectedWeb3` into the global `window` object, exposing t
 ```js
 window.injectedWeb3 = {
   // this is the name for this extension, there could be multiples injected,
-  // each with their own keys, here `polkadot-js` is for this extension
-  'polkadot-js': {
+  // each with their own keys, here `infra-extension` is for this extension
+  'infra-extension': {
     // semver for the package
     version: '0.1.0',
 
@@ -122,7 +122,7 @@ window.injectedWeb3 = {
 
 ### Using the mnemonic and password from the extension
 
-When you create a keypair via the extension, it supplies a 12-word mnemonic seed and asks you to create a password. This password only encrypts the private key on disk so that the password is required to spend funds in `polkadot-js/apps` or to import the account from backup. The password does not protect the mnemonic phrase. That is, if an attacker were to acquire the mnemonic phrase, they would be able to use it to spend funds without the password.
+When you create a keypair via the extension, it supplies a 12-word mnemonic seed and asks you to create a password. This password only encrypts the private key on disk so that the password is required to spend funds in `infrablockchain-apps` or to import the account from backup. The password does not protect the mnemonic phrase. That is, if an attacker were to acquire the mnemonic phrase, they would be able to use it to spend funds without the password.
 
 ### Importing mnemonics from other key generation utilities
 
